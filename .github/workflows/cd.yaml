@@ -12,7 +12,7 @@ on:
       - master
 
 jobs:
-  # TODO: Uncomment and configure this job if this is a project using goreleaser
+  # This is a neovim configuration project and doesn't need goreleaser
   # goreleaser:
   #   permissions:
   #     contents: write
@@ -20,9 +20,9 @@ jobs:
   #   steps:
   #     - uses: black-desk/workflows/goreleaser@master
 
-  # TODO: Remove this job
-  place-holder:
+  # Simple job for neovim configuration deployment
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Hello world!"
+          echo "Neovim configuration deployed!"

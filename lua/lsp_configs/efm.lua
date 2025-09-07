@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn>
+--
+-- SPDX-License-Identifier: MIT
+
 -- Register linters and formatters per language
 local prettierd = require('efmls-configs.formatters.prettier_d')
 local black = require('efmls-configs.formatters.black')

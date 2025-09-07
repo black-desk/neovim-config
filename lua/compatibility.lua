@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn>
+--
+-- SPDX-License-Identifier: MIT
+
 -- Some compatibility setup.
 
 -- > Function unpack was moved into the table library and therefore must be called as table.unpack. 

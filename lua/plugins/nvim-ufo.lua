@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn>
+--
+-- SPDX-License-Identifier: MIT
+
 local config = function()
         local handler = function(virtText, lnum, endLnum, width, truncate)
                 local newVirtText = {}

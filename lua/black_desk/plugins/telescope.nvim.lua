@@ -31,7 +31,6 @@ local function config()
                         ["ui-select"] = {
                                 require("telescope.themes").get_dropdown {} },
                         file_browser = {
-                                depth = false,
                                 hidden = {
                                         file_browser = true,
                                         folder_browser = true,
@@ -112,14 +111,14 @@ return { {
                 },
                 {
                         "tR",
-                        require('telescope.builtin').grep_string,
+                        function() require('telescope.builtin').grep_string() end,
                         desc = "TELE:: search in files",
                         remap = false
 
                 },
                 {
                         "tr",
-                        require('telescope.builtin').live_grep,
+                        function() require('telescope.builtin').live_grep() end,
                         desc = "TELE:: search in files",
                         remap = false
 

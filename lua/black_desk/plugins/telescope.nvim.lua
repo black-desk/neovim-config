@@ -84,60 +84,52 @@ return { {
         dependencies = {
                 'nvim-lua/plenary.nvim',
         },
-        keys = {
-                {
-                        "<leader>p",
-                        function()
-                                require('telescope').
-                                    extensions.
-                                    project.
-                                    project({
-                                            initial_mode = "normal"
-                                    })
-                        end,
-                        desc = "Telescope projects browser",
-                        remap = false
-                },
-                {
-                        "<leader>e",
-                        function()
-                                require('telescope').
-                                    extensions.
-                                    file_browser.
-                                    file_browser()
-                        end,
-                        desc = "Telescope file browser",
-                        remap = false
-                },
-                {
-                        "tR",
-                        function() require('telescope.builtin').grep_string() end,
-                        desc = "TELE:: search in files",
-                        remap = false
+        keys = { {
+		"tR",
+		function() require('telescope.builtin').grep_string() end,
+		desc = "TELE:: search in files",
+		remap = false
 
-                },
-                {
-                        "tr",
-                        function() require('telescope.builtin').live_grep() end,
-                        desc = "TELE:: search in files",
-                        remap = false
+	}, {
+		"tr",
+		function() require('telescope.builtin').live_grep() end,
+		desc = "TELE:: search in files",
+		remap = false
 
-                },
-        },
+	} },
         cmd = { 'Telescope' },
         event = "LspAttach",
         config = config,
-},
-        {
-                'nvim-telescope/telescope-ui-select.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-        {
-                'nvim-telescope/telescope-project.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-        {
-                'nvim-telescope/telescope-file-browser.nvim',
-                dependencies = { 'nvim-telescope/telescope.nvim' }
-        },
-}
+}, {
+	'nvim-telescope/telescope-ui-select.nvim',
+}, {
+	'nvim-telescope/telescope-project.nvim',
+	dependencies = { 'nvim-telescope/telescope.nvim' },
+        keys = { {
+		"<leader>p",
+		function()
+			require('telescope').
+			    extensions.
+			    project.
+			    project({
+				    initial_mode = "normal"
+			    })
+		end,
+		desc = "Telescope projects browser",
+		remap = false
+	} },
+}, {
+	'nvim-telescope/telescope-file-browser.nvim',
+	dependencies = { 'nvim-telescope/telescope.nvim' },
+	keys = { {
+		"<leader>e",
+		function()
+			require('telescope').
+			    extensions.
+			    file_browser.
+			    file_browser()
+		end,
+		desc = "Telescope file browser",
+		remap = false
+	} },
+} }

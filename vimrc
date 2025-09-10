@@ -34,7 +34,7 @@ tnoremap <ESC><ESC> <C-\><C-n>
 nnoremap <leader>T :terminal<CR>
 
 " open global config file in new tab
-nnoremap <leader>vimlua :execute 'edit ' . stdpath('config') . '/init.lua'<CR>
+nnoremap <leader>vimrc :execute 'edit ' . stdpath('config') . '/init.lua'<CR>
 
 if has('nvim')
 	finish

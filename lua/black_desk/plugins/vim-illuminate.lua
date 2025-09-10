@@ -22,5 +22,5 @@ return {
         'RRethy/vim-illuminate',
         config = config,
         events = { 'VimEnter' },
-        dependencies = { 'neovim/nvim-lspconfig' },
+        -- dependencies = { 'neovim/nvim-lspconfig' },
 }

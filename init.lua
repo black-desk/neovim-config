@@ -14,7 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 
 if not vim.uv.fs_stat(lazypath) then
         local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-        utils.shell.run_command(
+	local utils = require("black_desk.utils")
+        utils.run_command(
                 {
                         "git", "clone", "--filter=blob:none", "--branch=stable",
                         lazyrepo, lazypath,

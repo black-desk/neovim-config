@@ -3,9 +3,12 @@
 -- SPDX-License-Identifier: MIT
 
 return { {
+        "zbirenbaum/copilot-cmp",
+        event = "InsertEnter",
+        dependencies = { "zbirenbaum/copilot.lua" },
+}, {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
-        event = "InsertEnter",
         config = function()
                 require("copilot").setup({
                         panel = {
@@ -19,31 +22,10 @@ return { {
                         }
                 })
         end,
-        dependencies = {
-                {
-                        "zbirenbaum/copilot-cmp",
-                        config = function()
-                                require("copilot_cmp").setup()
-                        end
-
-                },
-                -- {
-                -- "CopilotC-Nvim/CopilotChat.nvim",
-                -- branch = "canary",
-                -- opts = {
-                -- context = 'buffers'
-                -- }
-                -- }
-        }
-
-}, {
-        "zbirenbaum/copilot-cmp",
-        dependencies = { "zbirenbaum/copilot.lua" },
 }, {
 
         "yetone/avante.nvim",
         event = "VeryLazy",
-        lazy = false,
         version = false, -- set this if you want to always pull the latest change
         opts = {
                 provider = "copilot",

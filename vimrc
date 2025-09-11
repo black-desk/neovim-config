@@ -34,13 +34,13 @@ tnoremap <ESC><ESC> <C-\><C-n>
 nnoremap <leader>T :terminal<CR>
 
 " open global config file in new tab
-nnoremap <leader>vimrc :execute 'edit ' . stdpath('config') . '/init.lua'<CR>
+nnoremap <silent> <leader>vimrc :execute 'edit ' . stdpath('config') . '/init.lua'<CR>
 
 if has('nvim')
 	finish
 endif
 
-nnoremap <leader>vimrc :execute 'edit ' .  expand('$MYVIMRC')<CR>
+nnoremap <silent> <leader>vimrc :execute 'edit ' .  expand('$MYVIMRC')<CR>
 
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'

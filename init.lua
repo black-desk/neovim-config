@@ -1,6 +1,4 @@
--- SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn>
---
--- SPDX-License-Identifier: MIT
+-- SPDX-FileCopyrightText: 2025 Chen Linxuan <me@black-desk.cn> SPDX-License-Identifier: MIT
 
 require("black_desk.python").ensure_python3_provider()
 
@@ -29,7 +27,7 @@ require("lazy").setup({
         spec = { import = "black_desk.plugins" },
         install = {
                 missing = true,
-                colorscheme = { "habamax" },
+                colorscheme = { "default" },
         },
 })
 

@@ -11,7 +11,7 @@
 
 local function config()
         local actions = require("telescope.actions")
-        local fb_actions = require "telescope._extensions.file_browser.actions"
+        -- local fb_actions = require "telescope._extensions.file_browser.actions"
         require('telescope').setup({
                 defaults = {
                         layout_strategy = "vertical",
@@ -29,32 +29,36 @@ local function config()
                 },
                 extensions = {
                         ["ui-select"] = {
-                                require("telescope.themes").get_dropdown {} },
-                        file_browser = {
-                                hidden = {
-                                        file_browser = true,
-                                        folder_browser = true,
-                                },
-                                hijack_netrw = true,
-                                mappings = {
-                                        n = {
-                                                l = actions.select_default,
-                                                h = fb_actions.goto_parent_dir,
-                                        }
-                                }
-                        },
+                                require("telescope.themes").get_dropdown {},
+			},
+                        -- file_browser = {
+				-- -- depth = false,
+                                -- hidden = {
+                                        -- file_browser = true,
+                                        -- folder_browser = true,
+                                -- },
+                                -- hijack_netrw = true,
+                                -- mappings = {
+                                        -- n = {
+                                                -- l = actions.select_default,
+                                                -- h = fb_actions.goto_parent_dir,
+                                        -- }
+                                -- }
+                        -- },
                         project = {
                                 base_dirs = { {
-                                        os.getenv("HOME") .. "/Documents/Repositories",
-                                        max_depth = 3,
+                                        os.getenv("HOME") .. "/Documents/workspace/repositories",
+                                        max_depth = 2,
                                 } }
-                        }
+                        },
+
+
                 }
         })
 
         require("telescope").load_extension("ui-select")
         require("telescope").load_extension('project')
-        require("telescope").load_extension('file_browser')
+	require("telescope").load_extension('frecency')
 
         vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function()
@@ -96,16 +100,18 @@ return { {
 		desc = "TELE:: search in files",
 		remap = false
 
-	} },
-        cmd = { 'Telescope' },
-        event = "LspAttach",
-        config = config,
-}, {
-	'nvim-telescope/telescope-ui-select.nvim',
-}, {
-	'nvim-telescope/telescope-project.nvim',
-	dependencies = { 'nvim-telescope/telescope.nvim' },
-        keys = { {
+	}, {
+		"<leader>e",
+		function()
+                        local builtin = require('telescope.builtin')
+			builtin.find_files( {
+				no_ignore = true,
+				hidden = true,
+			})
+		end,
+		desc = "Telescope find_files",
+		remap = false
+	}, {
 		"<leader>p",
 		function()
 			require('telescope').
@@ -118,18 +124,11 @@ return { {
 		desc = "Telescope projects browser",
 		remap = false
 	} },
-}, {
-	'nvim-telescope/telescope-file-browser.nvim',
-	dependencies = { 'nvim-telescope/telescope.nvim' },
-	keys = { {
-		"<leader>e",
-		function()
-			require('telescope').
-			    extensions.
-			    file_browser.
-			    file_browser()
-		end,
-		desc = "Telescope file browser",
-		remap = false
-	} },
-} }
+        cmd = { 'Telescope' },
+        event = "LspAttach",
+        config = config,
+}, 
+	'nvim-telescope/telescope-ui-select.nvim',
+	'nvim-telescope/telescope-project.nvim',
+	'nvim-telescope/telescope-frecency.nvim',
+} 

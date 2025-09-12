@@ -17,7 +17,7 @@ local function config()
                 local home = os.getenv('HOME')
                 local lsp_configs = io.popen(
                         'find ' .. '"' ..
-                        home .. '/.config/nvim/lua/lsp_configs/' ..
+                        home .. '/.config/nvim/lua/black_desk/lsp_configs/' ..
                         '"' .. ' -type f')
                 local ret = {}
                 if lsp_configs == nil then
@@ -26,9 +26,9 @@ local function config()
                 for lsp_config in lsp_configs:lines() do
                         local name = string.match(
                                 lsp_config,
-                                home .. "/[.]config/nvim/lua/lsp_configs//?(.*)[.]lua")
+                                home .. "/[.]config/nvim/lua/black_desk/lsp_configs//?(.*)[.]lua")
                         if name ~= nil then
-                                ret[name] = require("lsp_configs." .. name)
+                                ret[name] = require("black_desk.lsp_configs." .. name)
                         end
                 end
                 return ret
@@ -45,7 +45,6 @@ local function config()
                         efm = "efm-langserver",
                         jsonls = 'vscode-json-language-server',
                         lemminx = 'lemminx',
-                        rime_ls = "rime_ls",
                         lua_ls = 'lua-language-server',
                         marksman = 'marksman',
                         perlnavigator = 'perlnavigator',
@@ -74,16 +73,6 @@ local function config()
         local lsp_config = get_my_lsp_configs()
 
         local configs = require('lspconfig.configs')
-        if not configs.rime_ls then
-                configs.rime_ls = {
-                        default_config = {
-                                name = "rime_ls",
-                                cmd = { 'rime_ls' },
-                                filetypes = { '*' },
-                                single_file_support = true,
-                        },
-                }
-        end
 
         local server_list = get_server_list()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -138,31 +127,6 @@ local function config()
                         if client == nil then
                                 return
                         end
-
-                        if client.name ~= "rime_ls" then
-                                return
-                        end
-
-                        set_keymap("<leader><space>", function()
-                                client.request("workspace/executeCommand", {
-                                        command = "rime-ls.toggle-rime",
-                                }, function(_, result, ctx, _)
-                                        if ctx.client_id ~= client.id then
-                                                return
-                                        end
-                                        vim.b.rime_enabled = result
-                                        if result then
-                                                vim.cmd([[:Copilot disable]])
-                                        else
-                                                vim.cmd([[:Copilot enable]])
-                                        end
-                                end)
-                        end, "toggle rime")
-                        set_keymap('<leader>rs', function()
-                                client.request("workspace/executeCommand", {
-                                        command = "rime-ls.sync-user-data",
-                                })
-                        end, "sync rime user data")
                 end
         })
 end

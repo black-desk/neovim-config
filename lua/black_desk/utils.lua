@@ -2,14 +2,12 @@
 --
 -- SPDX-License-Identifier: MIT
 
--- This module provides utilities for running command and get its output.
-
 local M = {}
 
 ---
 ---Run a shell command.
 ---
----@param command string[]
+---@param command string
 ---@param trace_message string
 ---@param exit boolean
 ---@return string output
@@ -37,6 +35,15 @@ M.run_command = function(command, trace_message, exit)
         }, true, {})
         vim.fn.getchar()
         os.exit(1)
+end
+
+
+M.set_local_tabsize = function(size)
+	return function()
+		vim.opt_local.tabstop = size
+		vim.opt_local.shiftwidth = size
+		vim.opt_local.softtabstop = size
+	end
 end
 
 return M

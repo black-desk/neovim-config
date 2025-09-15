@@ -23,6 +23,7 @@
   "lualine-lsp-progress": { "branch": "master", "commit": "56842d097245a08d77912edf5f2a69ba29f275d7" },
   "lualine.nvim": { "branch": "master", "commit": "b8c23159c0161f4b89196f74ee3a6d02cdc3a955" },
   "luvit-meta": { "branch": "main", "commit": "1df30b60b1b4aecfebc785aa98943db6c6989716" },
+  "mason.nvim": { "branch": "main", "commit": "7dc4facca9702f95353d5a1f87daf23d78e31c2a" },
   "nerdcommenter": { "branch": "master", "commit": "02a3b6455fa07b61b9440a78732f1e9b7876c991" },
   "notmuch.nvim": { "branch": "main", "commit": "e4b0a6cbbe5e5281f7a6a8fa43c3e776d3eaec64" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },

@@ -2,7 +2,7 @@
 --
 -- SPDX-License-Identifier: MIT
 
-require("black_desk.utils")
+local utils = require("black_desk.utils")
 local M = {}
 
 M.ensure_python3_provider = function()

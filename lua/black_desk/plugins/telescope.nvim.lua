@@ -10,8 +10,15 @@
 -- Telescope is centered around modularity, allowing for easy customization.
 
 local function config()
+	local documents_dir = os.getenv("HOME").."/Documents"
+	local handle = io.popen("xdg-user-dir DOCUMENTS")
+	if handle ~= nil then
+		documents_dir = handle:read("*a")
+		handle:close()
+		documents_dir = documents_dir:gsub("%s+$", "")
+	end
+
         local actions = require("telescope.actions")
-        -- local fb_actions = require "telescope._extensions.file_browser.actions"
         require('telescope').setup({
                 defaults = {
                         layout_strategy = "vertical",
@@ -31,24 +38,10 @@ local function config()
                         ["ui-select"] = {
                                 require("telescope.themes").get_dropdown {},
 			},
-                        -- file_browser = {
-				-- -- depth = false,
-                                -- hidden = {
-                                        -- file_browser = true,
-                                        -- folder_browser = true,
-                                -- },
-                                -- hijack_netrw = true,
-                                -- mappings = {
-                                        -- n = {
-                                                -- l = actions.select_default,
-                                                -- h = fb_actions.goto_parent_dir,
-                                        -- }
-                                -- }
-                        -- },
                         project = {
                                 base_dirs = { {
-                                        os.getenv("HOME") .. "/Documents/workspace/repositories",
-                                        max_depth = 2,
+					documents_dir .. "/workspace/repositories",
+					max_depth = 2,
                                 } }
                         },
 

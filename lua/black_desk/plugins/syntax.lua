@@ -8,6 +8,6 @@ local function config_plantuml()
 end
 
 return {
-        "aklt/plantuml-syntax",
-        config = config_plantuml,
+	"aklt/plantuml-syntax",
+	config = config_plantuml,
 }

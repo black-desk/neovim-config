@@ -3,7 +3,6 @@
 -- SPDX-License-Identifier: MIT
 
 return {
-        'SirVer/ultisnips',
-        requires = 'honza/vim-snippets',
-        enable =false,
+	'SirVer/ultisnips',
+	requires = 'honza/vim-snippets',
 }

@@ -8,8 +8,8 @@
 -- Insert or delete brackets, parens, quotes in pair.
 
 return {
-        'windwp/nvim-autopairs',
-        config = function ()
-                require("nvim-autopairs").setup({});
-        end
+	'windwp/nvim-autopairs',
+	config = function()
+		require("nvim-autopairs").setup({});
+	end
 }

@@ -12,131 +12,132 @@
 -- config()
 
 local function config()
-        local function get_my_lsp_configs()
-                -- TODO: reduce duplicate code for read plugins config.
-                local home = os.getenv('HOME')
-                local lsp_configs = io.popen(
-                        'find ' .. '"' ..
-                        home .. '/.config/nvim/lua/black_desk/lsp_configs/' ..
-                        '"' .. ' -type f')
-                local ret = {}
-                if lsp_configs == nil then
-                        return {}
-                end
-                for lsp_config in lsp_configs:lines() do
-                        local name = string.match(
-                                lsp_config,
-                                home .. "/[.]config/nvim/lua/black_desk/lsp_configs//?(.*)[.]lua")
-                        if name ~= nil then
-                                ret[name] = require("black_desk.lsp_configs." .. name)
-                        end
-                end
-                return ret
-        end
+	local function get_my_lsp_configs()
+		-- TODO: reduce duplicate code for read plugins config.
+		local home = os.getenv('HOME')
+		local lsp_configs = io.popen(
+			'find ' .. '"' ..
+			home .. '/.config/nvim/lua/black_desk/lsp_configs/' ..
+			'"' .. ' -type f')
+		local ret = {}
+		if lsp_configs == nil then
+			return {}
+		end
+		for lsp_config in lsp_configs:lines() do
+			local name = string.match(
+				lsp_config,
+				home .. "/[.]config/nvim/lua/black_desk/lsp_configs//?(.*)[.]lua")
+			if name ~= nil then
+				ret[name] = require("black_desk.lsp_configs." .. name)
+			end
+		end
+		return ret
+	end
 
-        local function get_server_list()
-                local server_map = {
-                        bashls = 'bash-language-server',
-                        clangd = 'clangd',
-                        cmake = 'cmake-language-server',
-                        eslint = 'vscode-eslint-language-server',
-                        gopls = 'gopls',
-                        hls = 'haskell-language-server',
-                        efm = "efm-langserver",
-                        jsonls = 'vscode-json-language-server',
-                        lemminx = 'lemminx',
-                        lua_ls = 'lua-language-server',
-                        marksman = 'marksman',
-                        perlnavigator = 'perlnavigator',
-                        pyright = 'pyright',
-                        rust_analyzer = 'rust-analyzer',
-                        taplo = 'taplo',
-                        texlab = 'texlab',
-                        ts_ls = 'typescript-language-server',
-                        tinymist = 'tinymist',
-                        yamlls = 'yaml-language-server',
-                }
+	local function get_server_list()
+		local server_map = {
+			bashls = 'bash-language-server',
+			clangd = 'clangd',
+			cmake = 'cmake-language-server',
+			efm = "efm-langserver",
+			eslint = 'vscode-eslint-language-server',
+			gopls = 'gopls',
+			hls = 'haskell-language-server',
+			jsonls = 'vscode-json-language-server',
+			lemminx = 'lemminx',
+			lua_ls = 'lua-language-server',
+			marksman = 'marksman',
+			perlnavigator = 'perlnavigator',
+			pyright = 'pyright',
+			rust_analyzer = 'rust-analyzer',
+			taplo = 'taplo',
+			texlab = 'texlab',
+			tinymist = 'tinymist',
+			ts_ls = 'typescript-language-server',
+			vimls = 'vim-language-server',
+			yamlls = 'yaml-language-server',
+		}
 
-                local server_list = {}
+		local server_list = {}
 
-                for lsp, command in pairs(server_map) do
-                        if vim.fn.executable(command) ~= 1 then
-                                goto continue
-                        end
-                        table.insert(server_list, lsp)
-                        ::continue::
-                end
+		for lsp, command in pairs(server_map) do
+			if vim.fn.executable(command) ~= 1 then
+				goto continue
+			end
+			table.insert(server_list, lsp)
+			::continue::
+		end
 
-                return server_list
-        end
+		return server_list
+	end
 
-        local lsp_config = get_my_lsp_configs()
+	local lsp_config = get_my_lsp_configs()
 
-        local configs = require('lspconfig.configs')
+	local configs = require('lspconfig.configs')
 
-        local server_list = get_server_list()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities.textDocument.foldingRange = {
-                dynamicRegistration = false,
-                lineFoldingOnly = true
-        }
-        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+	local server_list = get_server_list()
+	local capabilities = vim.lsp.protocol.make_client_capabilities()
+	capabilities.textDocument.foldingRange = {
+		dynamicRegistration = false,
+		lineFoldingOnly = true
+	}
+	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-        local default_lsp_config = {
-                flags = { debounce_text_changes = nil },
-                capabilities = capabilities
-        }
+	local default_lsp_config = {
+		flags = { debounce_text_changes = nil },
+		capabilities = capabilities
+	}
 
-        -- Use a loop to conveniently call 'setup' on multiple servers and map
-        -- buffer local keybindings when the language server attaches.
-        for _, lsp in ipairs(server_list) do
-                local my_cfg = lsp_config[lsp]
-                if my_cfg == nil then
-                        my_cfg = {}
-                end
-                local cfg = vim.tbl_deep_extend(
-                        'force', default_lsp_config, my_cfg)
-                require('lspconfig')[lsp].setup(cfg)
-        end
+	-- Use a loop to conveniently call 'setup' on multiple servers and map
+	-- buffer local keybindings when the language server attaches.
+	for _, lsp in ipairs(server_list) do
+		local my_cfg = lsp_config[lsp]
+		if my_cfg == nil then
+			my_cfg = {}
+		end
+		local cfg = vim.tbl_deep_extend(
+			'force', default_lsp_config, my_cfg)
+		require('lspconfig')[lsp].setup(cfg)
+	end
 
-        vim.api.nvim_create_autocmd("LspAttach", {
-                callback = function(args)
-                        local set_keymap = function(lhs, rhs, desc)
-                                vim.keymap.set(
-                                        "n", lhs, rhs,
-                                        {
-                                                buffer = args.buf,
-                                                desc = desc
-                                        }
-                                )
-                        end
-                        set_keymap("K", vim.lsp.buf.hover, "do hover")
-                        set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
-                        set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
-                        set_keymap("<space>f", function()
-                                vim.lsp.buf.format({
-                                        filter = function(client)
-                                                return client.name ~= "tsserver"
-                                        end
-                                })
-                        end, "format document")
-                        set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
-                        set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
+	vim.api.nvim_create_autocmd("LspAttach", {
+		callback = function(args)
+			local set_keymap = function(lhs, rhs, desc)
+				vim.keymap.set(
+					"n", lhs, rhs,
+					{
+						buffer = args.buf,
+						desc = desc
+					}
+				)
+			end
+			set_keymap("K", vim.lsp.buf.hover, "do hover")
+			set_keymap("<C-k>", vim.lsp.buf.signature_help, "show signature help")
+			set_keymap("<space>rn", vim.lsp.buf.rename, "rename")
+			set_keymap("<space>f", function()
+				vim.lsp.buf.format({
+					filter = function(client)
+						return client.name ~= "tsserver"
+					end
+				})
+			end, "format document")
+			set_keymap("<space>E", vim.diagnostic.open_float, "show float diagnostic")
+			set_keymap("<space>a", vim.lsp.buf.code_action, "show code action")
 
-                        local client = vim.lsp.get_client_by_id(args.data.client_id)
-                        if client == nil then
-                                return
-                        end
-                end
-        })
+			local client = vim.lsp.get_client_by_id(args.data.client_id)
+			if client == nil then
+				return
+			end
+		end
+	})
 end
 
 return {
-        'neovim/nvim-lspconfig',
-        config = config,
-        event = { "BufReadPost", "BufNewFile" },
-        dependencies = {
-                'kevinhwang91/nvim-ufo',
-                'creativenull/efmls-configs-nvim',
-        }
+	'neovim/nvim-lspconfig',
+	config = config,
+	event = { "BufReadPost", "BufNewFile" },
+	dependencies = {
+		'kevinhwang91/nvim-ufo',
+		'creativenull/efmls-configs-nvim',
+	}
 }

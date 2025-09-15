@@ -2,7 +2,7 @@
 --
 -- SPDX-License-Identifier: MIT
 
--- > Function unpack was moved into the table library and therefore must be called as table.unpack. 
+-- > Function unpack was moved into the table library and therefore must be called as table.unpack.
 -- Reference: https://www.lua.org/manual/5.2/manual.html
 table.unpack = table.unpack or unpack -- NOLINT
 

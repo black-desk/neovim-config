@@ -4,13 +4,13 @@
 
 snippet iferr "check err is nil" b
 if err != nil {
-	return 
+	return
 }
 endsnippet
 
 snippet iferr(dbus) "check err is nil (dbus)" b
 if err != nil {
 	derr = dbus.NewError($1,[]interface{}{err})
-	return 
+	return
 }
 endsnippet

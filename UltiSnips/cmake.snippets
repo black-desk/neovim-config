@@ -99,7 +99,7 @@ endsnippet
 snippet SYSTEMD_USER_UNIT_DIR "" b
 find_package(PkgConfig)
 if(NOT SYSTEMD_USER_UNIT_DIR)
-	if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.28") 
+	if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.28")
 		pkg_get_variable(SYSTEMD_USER_UNIT_DIR
 				 systemd systemd_user_unit_dir
 				 DEFINE_VARIABLES

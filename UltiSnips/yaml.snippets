@@ -69,7 +69,7 @@ jobs:
             echo "get-project-version script not found" >&2
             exit -1
           fi
-          
+
           version="$("${get_project_version}")"
           echo version="$version" >> $GITHUB_OUTPUT
 

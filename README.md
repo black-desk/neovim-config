@@ -51,7 +51,8 @@ My personal neovim configuration.
 
 ## Usage
 
-I use this repository through chezmoi, and I recommend that you only use this project as a configuration reference.
+I use this repository through chezmoi,
+and I recommend that you only use this project as a configuration reference.
 
 ## License
 

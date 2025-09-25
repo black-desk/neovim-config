@@ -73,8 +73,6 @@ local function config()
 
 	local lsp_config = get_my_lsp_configs()
 
-	local configs = require('lspconfig.configs')
-
 	local server_list = get_server_list()
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities.textDocument.foldingRange = {
@@ -82,22 +80,20 @@ local function config()
 		lineFoldingOnly = true
 	}
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-	local default_lsp_config = {
-		flags = { debounce_text_changes = nil },
-		capabilities = capabilities
-	}
+	
+	-- vim.lsp.config('*', {
+		-- flags = { debounce_text_changes = nil },
+		-- capabilities = capabilities,
+	-- })
 
 	-- Use a loop to conveniently call 'setup' on multiple servers and map
 	-- buffer local keybindings when the language server attaches.
 	for _, lsp in ipairs(server_list) do
-		local my_cfg = lsp_config[lsp]
-		if my_cfg == nil then
-			my_cfg = {}
-		end
-		local cfg = vim.tbl_deep_extend(
-			'force', default_lsp_config, my_cfg)
-		require('lspconfig')[lsp].setup(cfg)
+		-- local my_cfg = lsp_config[lsp]
+		-- if my_cfg ~= nil then
+			-- vim.lsp.config(lsp, my_cfg)
+		-- end
+		vim.lsp.enable(lsp)
 	end
 
 	vim.api.nvim_create_autocmd("LspAttach", {
@@ -135,7 +131,7 @@ end
 return {
 	'neovim/nvim-lspconfig',
 	config = config,
-	event = { "BufReadPost", "BufNewFile" },
+	event = { "BufWinEnter", "BufNewFile" },
 	dependencies = {
 		'kevinhwang91/nvim-ufo',
 		'creativenull/efmls-configs-nvim',

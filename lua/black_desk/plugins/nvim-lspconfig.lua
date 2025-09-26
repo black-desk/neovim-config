@@ -12,87 +12,73 @@
 -- config()
 
 local function config()
-	local function get_my_lsp_configs()
-		-- TODO: reduce duplicate code for read plugins config.
-		local home = os.getenv('HOME')
-		local lsp_configs = io.popen(
-			'find ' .. '"' ..
-			home .. '/.config/nvim/lua/black_desk/lsp_configs/' ..
-			'"' .. ' -type f')
-		local ret = {}
-		if lsp_configs == nil then
-			return {}
-		end
-		for lsp_config in lsp_configs:lines() do
-			local name = string.match(
-				lsp_config,
-				home .. "/[.]config/nvim/lua/black_desk/lsp_configs//?(.*)[.]lua")
-			if name ~= nil then
-				ret[name] = require("black_desk.lsp_configs." .. name)
-			end
-		end
-		return ret
-	end
+	local servers = {
+		bashls = {},
+		clangd = {
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+				"--completion-style=detailed",
+				"--enable-config",
+				"--offset-encoding=utf-16",
+				"-j=8",
+			},
+			root_dir = require("lspconfig.util").root_pattern(
+				"build/compile_commands.json",
+				"compile_commands.json",
+				".git"),
+		},
+		cmake = {},
+		efm = {
+			filetypes = require('efmls-configs.defaults').languages(),
+			settings = {
+				rootMarkers = { 'build/compile_commands.json', ".git" },
+				languages = {
+					markdown = { require('efmls-configs.formatters.prettier_d') },
+					python = { require('efmls-configs.formatters.black') },
+				},
+			},
+			init_options = {
+				documentFormatting = true,
+				documentRangeFormatting = true,
+			},
+		},
+		eslint = {},
+		gopls = {},
+		hls = {},
+		jsonls = {},
+		lemminx = {},
+		lua_ls = {},
+		marksman = {},
+		perlnavigator = {},
+		pyright = {
+			settings = {
+				python = {
+					pythonPath = require("black_desk.python").find_python(),
+				}
+			}
+		},
+		rust_analyzer = {},
+		taplo = {},
+		texlab = {},
+		tinymist = {},
+		ts_ls = {},
+		vimls = {},
+		yamlls = {},
+	}
 
-	local function get_server_list()
-		local server_map = {
-			bashls = 'bash-language-server',
-			clangd = 'clangd',
-			cmake = 'cmake-language-server',
-			efm = "efm-langserver",
-			eslint = 'vscode-eslint-language-server',
-			gopls = 'gopls',
-			hls = 'haskell-language-server',
-			jsonls = 'vscode-json-language-server',
-			lemminx = 'lemminx',
-			lua_ls = 'lua-language-server',
-			marksman = 'marksman',
-			perlnavigator = 'perlnavigator',
-			pyright = 'pyright',
-			rust_analyzer = 'rust-analyzer',
-			taplo = 'taplo',
-			texlab = 'texlab',
-			tinymist = 'tinymist',
-			ts_ls = 'typescript-language-server',
-			vimls = 'vim-language-server',
-			yamlls = 'yaml-language-server',
-		}
-
-		local server_list = {}
-
-		for lsp, command in pairs(server_map) do
-			if vim.fn.executable(command) ~= 1 then
-				goto continue
-			end
-			table.insert(server_list, lsp)
-			::continue::
-		end
-
-		return server_list
-	end
-
-	local lsp_config = get_my_lsp_configs()
-
-	local server_list = get_server_list()
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities.textDocument.foldingRange = {
 		dynamicRegistration = false,
 		lineFoldingOnly = true
 	}
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-	
-	-- vim.lsp.config('*', {
-		-- flags = { debounce_text_changes = nil },
-		-- capabilities = capabilities,
-	-- })
 
-	-- Use a loop to conveniently call 'setup' on multiple servers and map
-	-- buffer local keybindings when the language server attaches.
-	for _, lsp in ipairs(server_list) do
-		-- local my_cfg = lsp_config[lsp]
-		-- if my_cfg ~= nil then
-			-- vim.lsp.config(lsp, my_cfg)
-		-- end
+	for lsp, cfg in pairs(servers) do
+		if next(cfg) ~= nil then
+			vim.lsp.config(lsp, cfg)
+		end
 		vim.lsp.enable(lsp)
 	end
 
@@ -131,7 +117,6 @@ end
 return {
 	'neovim/nvim-lspconfig',
 	config = config,
-	event = { "BufWinEnter", "BufNewFile" },
 	dependencies = {
 		'kevinhwang91/nvim-ufo',
 		'creativenull/efmls-configs-nvim',

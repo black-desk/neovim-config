@@ -23,4 +23,13 @@ M.ensure_python3_provider = function()
 		true)
 end
 
+M.find_python = function()
+	local path = io.popen("poetry env info -e 2>/dev/null"):read()
+	if path ~= nil and path ~= "" then
+		return path
+	end
+	
+	return nil
+end
+
 return M

@@ -24,10 +24,11 @@ local function config()
 				"--offset-encoding=utf-16",
 				"-j=8",
 			},
-			root_dir = require("lspconfig.util").root_pattern(
+			root_markers = {
 				"build/compile_commands.json",
 				"compile_commands.json",
-				".git"),
+				".git",
+			},
 		},
 		cmake = {},
 		efm = {

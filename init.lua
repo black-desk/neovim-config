@@ -2,7 +2,6 @@
 --
 -- SPDX-License-Identifier: MIT
 
-require("black_desk.wsl")
 require("black_desk.compat")
 require("black_desk.python").ensure_python3_provider()
 

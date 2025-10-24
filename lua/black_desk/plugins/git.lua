@@ -23,12 +23,10 @@ return {
 	dependencies = {
 		-- GBrowser handlers
 		{
-			-- https://github.com/tpope/vim-rhubarb
 			'tpope/vim-rhubarb', -- github
-			-- https://github.com/borissov/fugitive-gitea
-			'borissov/fugitive-gitea', -- gitea
-			-- https://github.com/shumphrey/fugitive-gitlab.vim
-			'shumphrey/fugitive-gitlab.vim', -- gitlab
+			'borissov/fugitive-gitea',
+			'shumphrey/fugitive-gitlab.vim',
+			'black-desk/fugitive-gitee.vim',
 		},
 		{
 			-- https://github.com/lewis6991/gitsigns.nvim

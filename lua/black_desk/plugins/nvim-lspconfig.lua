@@ -111,6 +111,21 @@ local function config()
 			if client == nil then
 				return
 			end
+
+			if client.server_capabilities.documentFormattingProvider == nil then
+				return
+			end
+
+			set_keymap("<space>f", function()
+				require "lsp-format-modifications".format_modifications(
+					client,
+					args.buf,
+					{
+						filter = function(client)
+							return client.name ~= "tsserver"
+						end,
+					})
+			end, "format document")
 		end
 	})
 end
@@ -121,5 +136,11 @@ return {
 	dependencies = {
 		'kevinhwang91/nvim-ufo',
 		'creativenull/efmls-configs-nvim',
+		{
+			'joechrisellis/lsp-format-modifications.nvim',
+			dependencies = {
+				'nvim-lua/plenary.nvim'
+			}
+		}
 	}
 }

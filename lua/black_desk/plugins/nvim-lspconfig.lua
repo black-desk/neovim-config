@@ -60,7 +60,21 @@ local function config()
 				}
 			}
 		},
-		rust_analyzer = {},
+		rust_analyzer = {
+			settings = {
+				["rust-analyzer"] = {
+					cargo = {
+						features = "all",
+						buildScripts = {
+							enable = true,
+						}
+					},
+					procMacro = {
+						enable = true,
+					}
+				}
+			}
+		},
 		taplo = {},
 		texlab = {},
 		tinymist = {},

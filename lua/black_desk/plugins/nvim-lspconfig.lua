@@ -32,12 +32,15 @@ local function config()
 		},
 		cmake = {},
 		efm = {
-			filetypes = require('efmls-configs.defaults').languages(),
 			settings = {
 				rootMarkers = { 'build/compile_commands.json', ".git" },
 				languages = {
 					markdown = { require('efmls-configs.formatters.prettier_d') },
 					python = { require('efmls-configs.formatters.black') },
+					djot = { {
+						formatCommand = 'djotfmt',
+						formatStdin = true,
+					} }
 				},
 			},
 			init_options = {

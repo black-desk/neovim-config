@@ -128,5 +128,8 @@ return { {
 },
 	'nvim-telescope/telescope-ui-select.nvim',
 	'nvim-telescope/telescope-project.nvim',
-	'nvim-telescope/telescope-frecency.nvim',
+	{
+		'nvim-telescope/telescope-frecency.nvim',
+		version = "^1.0.0",
+	},
 }

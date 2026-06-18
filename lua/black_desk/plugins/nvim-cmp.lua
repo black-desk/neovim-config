@@ -71,12 +71,12 @@ local config = function()
 				return false
 			end
 
-			local ret, fcitx5ui = pcall(require, 'fcitx5-ui')
+			local ret, rsime = pcall(require, 'rsime')
 			if not ret then
 				return true
 			end
 
-			return fcitx5ui.get_current_input_method_status().name == nil
+			return not rsime.is_active()
 		end,
 		sorting = {
 			comparators = {

@@ -16,6 +16,7 @@ return {
     {
       "<M-i>",
       function()
+        require("nvim-autopairs").toggle()
         require("rsime").toggle()
         if vim.fn.mode() == "n" then
           vim.cmd("startinsert")

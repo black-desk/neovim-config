@@ -28,7 +28,12 @@ M.find_python = function()
 	if path ~= nil and path ~= "" then
 		return path
 	end
-	
+
+	path = io.popen("uv run which python 2>/dev/null"):read()
+	if path ~= nil and path ~= "" then
+		return path
+	end
+
 	return nil
 end
 

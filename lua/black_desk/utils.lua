@@ -37,13 +37,4 @@ M.run_command = function(command, trace_message, exit)
 	os.exit(1)
 end
 
-
-M.set_local_tabsize = function(size)
-	return function()
-		vim.opt_local.tabstop = size
-		vim.opt_local.shiftwidth = size
-		vim.opt_local.softtabstop = size
-	end
-end
-
 return M

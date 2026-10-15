@@ -2,4 +2,4 @@
 "
 " SPDX-License-Identifier: MIT
 
-au BufRead,BufNewFile *.dj set filetype=djot
+au BufRead,BufNewFile *.dj,*.djot set filetype=djot

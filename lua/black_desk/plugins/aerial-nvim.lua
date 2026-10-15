@@ -17,7 +17,14 @@ return {
 		set_keymap("t", "<cmd>AerialToggle<cr>", "toggle outline")
 	end,
 	config = function()
-		require("aerial").setup()
+		require("aerial").setup({
+			backends = {
+				djot = { 'lsp' },
+			},
+			filter_kind = {
+				djot = { 'String' },
+			},
+		})
 	end,
 	cmd = {
 		'AerialToggle',

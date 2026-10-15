@@ -31,16 +31,19 @@ local function config()
 			},
 		},
 		cmake = {},
+		djot = {
+			cmd = { 'djot-lsp' },
+			filetypes = { 'djot' },
+			root_markers = { '.git' },
+			workspace_required = false,
+		},
 		efm = {
+			filetypes = { 'markdown', 'python' },
 			settings = {
 				rootMarkers = { 'build/compile_commands.json', ".git" },
 				languages = {
 					markdown = { require('efmls-configs.formatters.prettier_d') },
 					python = { require('efmls-configs.formatters.black') },
-					djot = { {
-						formatCommand = 'djotfmt',
-						formatStdin = true,
-					} }
 				},
 			},
 			init_options = {
@@ -94,6 +97,9 @@ local function config()
 	capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 	for lsp, cfg in pairs(servers) do
+		if lsp == 'djot' then
+			cfg.capabilities = capabilities
+		end
 		if next(cfg) ~= nil then
 			vim.lsp.config(lsp, cfg)
 		end
@@ -126,6 +132,13 @@ local function config()
 
 			local client = vim.lsp.get_client_by_id(args.data.client_id)
 			if client == nil then
+				return
+			end
+
+			if client.name == 'djot' then
+				set_keymap("<space>f", function()
+					vim.lsp.buf.format({ bufnr = args.buf, name = 'djot' })
+				end, "format document")
 				return
 			end
 

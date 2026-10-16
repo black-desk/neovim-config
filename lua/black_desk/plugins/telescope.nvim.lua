@@ -59,11 +59,13 @@ local function config()
 	require("telescope").load_extension('frecency')
 
 	vim.api.nvim_create_autocmd("LspAttach", {
-		callback = function()
+		-- lazy.nvim replays the first LspAttach only for new autocmd groups.
+		group = vim.api.nvim_create_augroup("black_desk_telescope_lsp", { clear = true }),
+		callback = function(args)
 			local map = function(lhs, rhs, desc)
 				vim.keymap.set('n', lhs, rhs, {
 					silent = true,
-					buffer = true,
+					buffer = args.buf,
 					desc = desc,
 				})
 			end

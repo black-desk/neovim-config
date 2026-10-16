@@ -92,6 +92,28 @@ local config = function()
 		},
 	})
 
+	-- cmp's TextChanged handler requires a one-column advance since the last
+	-- text change. Skipping an autopaired ']' then typing '(' advances twice,
+	-- so Djot link completion is missed. Recheck LSP trigger characters here;
+	-- on_change deduplicates contexts already handled by cmp itself.
+	vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, {
+		group = vim.api.nvim_create_augroup('black_desk_djot_completion', { clear = true }),
+		callback = function(args)
+			if vim.bo[args.buf].filetype ~= 'djot' or not require('cmp.config').enabled() then
+				return
+			end
+			local col = vim.api.nvim_win_get_cursor(0)[2]
+			local char = vim.api.nvim_get_current_line():sub(col, col)
+			for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+				local provider = client.server_capabilities.completionProvider
+				if provider and vim.tbl_contains(provider.triggerCharacters or {}, char) then
+					cmp.core:on_change('TextChanged')
+					return
+				end
+			end
+		end,
+	})
+
 	-- Use buffer source for `/` (if you enabled `native_menu`, this won't
 	-- work anymore).
 	cmp.setup.cmdline('/', {

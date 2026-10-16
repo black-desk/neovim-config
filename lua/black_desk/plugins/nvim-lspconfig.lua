@@ -32,7 +32,7 @@ local function config()
 		},
 		cmake = {},
 		djot = {
-			cmd = { 'djot-lsp' },
+			cmd = { 'djotls' },
 			filetypes = { 'djot' },
 			root_markers = { '.git' },
 			workspace_required = false,

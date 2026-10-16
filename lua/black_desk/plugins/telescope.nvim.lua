@@ -57,28 +57,30 @@ local function config()
 	require("telescope").load_extension("ui-select")
 	require("telescope").load_extension('project')
 	require("telescope").load_extension('frecency')
+end
 
+local function init()
 	vim.api.nvim_create_autocmd("LspAttach", {
-		-- lazy.nvim replays the first LspAttach only for new autocmd groups.
 		group = vim.api.nvim_create_augroup("black_desk_telescope_lsp", { clear = true }),
 		callback = function(args)
-			local map = function(lhs, rhs, desc)
-				vim.keymap.set('n', lhs, rhs, {
+			local map = function(lhs, picker, desc)
+				-- Requiring here lets lazy.nvim configure Telescope on first use.
+				vim.keymap.set('n', lhs, function()
+					require('telescope.builtin')[picker]()
+				end, {
 					silent = true,
 					buffer = args.buf,
 					desc = desc,
 				})
 			end
 
-			local builtin = require('telescope.builtin')
-
-			map("<space>H", builtin.jumplist, "Telescope jumplist")
-			map("<space>M", builtin.marks, "Telescope marks")
-			map("<space>s", builtin.lsp_document_symbols, "Telescope LSP document symbols")
-			map("gd", builtin.lsp_definitions, "Telescope LSP definitions")
-			map("gi", builtin.lsp_implementations, "Telescope LSP implementations")
-			map("gr", builtin.lsp_references, "Telescope LSP references")
-			map("gy", builtin.lsp_type_definitions, "Telescope LSP type definitions")
+			map("<space>H", "jumplist", "Telescope jumplist")
+			map("<space>M", "marks", "Telescope marks")
+			map("<space>s", "lsp_document_symbols", "Telescope LSP document symbols")
+			map("gd", "lsp_definitions", "Telescope LSP definitions")
+			map("gi", "lsp_implementations", "Telescope LSP implementations")
+			map("gr", "lsp_references", "Telescope LSP references")
+			map("gy", "lsp_type_definitions", "Telescope LSP type definitions")
 		end,
 	})
 end
@@ -125,7 +127,7 @@ return { {
 		remap = false
 	} },
 	cmd = { 'Telescope' },
-	event = "LspAttach",
+	init = init,
 	config = config,
 },
 	'nvim-telescope/telescope-ui-select.nvim',

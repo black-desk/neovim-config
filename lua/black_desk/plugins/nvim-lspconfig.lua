@@ -94,6 +94,7 @@ local function config()
 		dynamicRegistration = false,
 		lineFoldingOnly = true
 	}
+	capabilities.workspace.workspaceEdit.documentChanges = true
 	vim.lsp.config('*', { capabilities = capabilities })
 
 	for lsp, cfg in pairs(servers) do
@@ -120,7 +121,7 @@ local function config()
 			set_keymap("<space>f", function()
 				vim.lsp.buf.format({
 					filter = function(client)
-						return client.name ~= "tsserver"
+						return client.name ~= "ts_ls"
 					end
 				})
 			end, "format document")
@@ -132,27 +133,9 @@ local function config()
 				return
 			end
 
-			if client.name == 'djot' then
-				set_keymap("<space>f", function()
-					vim.lsp.buf.format({ bufnr = args.buf, name = 'djot' })
-				end, "format document")
-				return
-			end
-
 			if client.server_capabilities.documentFormattingProvider == nil then
 				return
 			end
-
-			set_keymap("<space>f", function()
-				require "lsp-format-modifications".format_modifications(
-					client,
-					args.buf,
-					{
-						filter = function(client)
-							return client.name ~= "tsserver"
-						end,
-					})
-			end, "format document")
 		end
 	})
 end
@@ -164,11 +147,5 @@ return {
 		'saghen/blink.cmp',
 		'kevinhwang91/nvim-ufo',
 		'creativenull/efmls-configs-nvim',
-		{
-			'joechrisellis/lsp-format-modifications.nvim',
-			dependencies = {
-				'nvim-lua/plenary.nvim'
-			}
-		}
 	}
 }
